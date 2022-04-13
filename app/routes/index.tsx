@@ -33,13 +33,13 @@ export default function Index() {
         <div className="mx-auto container p-8">
 
         {
-         feeds && feeds.map((feed: any) => {
+         feeds && feeds.length > 0 ? feeds.map((feed: any) => {
             return (
               <div className="pb-4">
                 <NavLink to={`/posts/${feed.id}`} className="mr-5 hover:text-gray-900">{feed.feed_title}</NavLink>
                 </div>
             )
-          })
+          }) : (<p> No feed data </p>)
         }
         </div>
 

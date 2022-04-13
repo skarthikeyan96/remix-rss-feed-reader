@@ -12,35 +12,31 @@ export const action = async ({request}:any) => {
     // validate if it is a legitimate url
     const parser = new Parser();
     const rssResponse = await parser.parseURL(formResponse.get('url'))
-
-    console.log(rssResponse.items.length)
-
     const todaysDate = new Date().getDate()
-
     const filteredFeed = rssResponse.items.filter(item => new Date(item.pubDate as string).getDate() === todaysDate)
-
-    console.log(filteredFeed.length)
-
     for(let i=0;i<filteredFeed.length;i++){
+    const response = filteredFeed[i]
 
-    const response:any = filteredFeed[i]
-
-    const feedData = {
+    const feedData:{
+      [key: string]: string | boolean | number | undefined
+    }  = {
         feed_url: response.link,
-        image: rssResponse?.image || "",
-        audio_link: response.enclosure.url,
-        audio_type: response.enclosure.type,
-        audio_length: response.enclosure["length"],
-        audio_duration: response.enclosure.duration,
+        audio_link: response.enclosure?.url,
+        audio_type: response.enclosure?.type,
+        audio_length: response.enclosure?.length,
         rss_title: rssResponse.title,
         feed_title: response.title,
-        isPodcast: response.hasOwnProperty('enclosure')
+        isPodcast: response.hasOwnProperty('enclosure') && Object.entries(response).length === 0,
+        rss_feed_id: response.guid, // unique feed id
+        rss_feed_author: response.author,
+        rss_feed_description: response.content
+         
     }
     // TODO: error handling
-    await supabase.from("feeds").insert([feedData]).single();
+    await supabase.from("feeds").insert([feedData]).single()
    }
     
-    return redirect('/')
+   return redirect('/')
   }
 
 const Add = () => {
