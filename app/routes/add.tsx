@@ -27,7 +27,6 @@ export const action = async ({request}:any) => {
         audio_length: response.enclosure?.length,
         rss_title: rssResponse.title,
         feed_title: response.title,
-        isPodcast: response.hasOwnProperty('enclosure') && Object.entries(response).length === 0,
         rss_feed_id: response.guid, // unique feed id
         rss_feed_author: response.author,
         rss_feed_description: response.content
