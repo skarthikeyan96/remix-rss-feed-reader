@@ -28,10 +28,14 @@ const Post = () => {
     <>
       <Layout>
         <h1> {data.podcastData.rss_title} </h1>
-        <audio controls>
-          <source src={data.podcastData.audio_link} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
+        {
+         data.podcastData.audio_link && <audio controls>
+            <source src={data.podcastData.audio_link} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        }
+        <p> {data.podcastData.rss_feed_description}</p>
+        
       </Layout>
     </>
   );
